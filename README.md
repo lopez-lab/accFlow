@@ -53,7 +53,7 @@ Once this is done, you are ready to execute the `pymolgen.py` script (see [gener
 ### Installing
 To install the workflow, first, clone this GitHub repository into your home directory.
 ```console
-git clone https://github.com/kuriba/flow.git
+git clone https://github.com/lopez-lab/accFlow.git
 ```
 Then, go to the directory and run the init.sh script. This must only be done the first time you are installing the workflow.
 ```console
