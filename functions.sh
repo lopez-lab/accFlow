@@ -333,7 +333,7 @@ function setup_vee {
         local route=$(grep '#p' $com_file | sed "s|B3LYP/4-31G* EmpiricalDispersion=GD3BJ|CAM-B3LYP/6-31+G(d)|")
         local opt_keyword=$(echo $route | awk '/opt/' RS=" ")
         local charge=$(grep 'Charge =' $log_file | awk '{print $3}')
-    local mult=$(grep 'Charge =' $log_file | awk '{print $6}')
+        local mult=$(grep 'Charge =' $log_file | awk '{print $6}')
         local vee="${log_file/.log/_tddft}"
         local new_route=$(echo $route | sed "s|$opt_keyword|td=(50-50)|")
 

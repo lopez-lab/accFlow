@@ -19,7 +19,7 @@ for conf in $mol*.log; do
 done
 
 
-if [[ $num_confs -eq "${#energies[@]}" ]]; then
+if [[ "${#energies[@]}" -ge $num_confs ]]; then
 	# get the index of the lowest energy
 	min_index=$(echo "${energies[*]}" | tr ' ' '\n' | awk 'NR==1{min=$0}NR>1 && $1<min{min=$1;pos=NR}END{print pos}')
 
