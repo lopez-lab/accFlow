@@ -71,7 +71,11 @@ echo -e "$INPUT_TITLE\n" >> "$COM"
 echo "$CHARGE $MULT" >> "$COM"
 
 # create formatted coordinates
-obabel -i $TYPE $INPUT -o com 2>/dev/null | sed -e '1,5d' >> "$COM"
+tmp_file="$title.tmp"
+obabel -i $TYPE $INPUT -o com 2>/dev/null >> $tmp_file
+charge_mult_line=$(cat $tmp_file | grep -n -- '-\?[0-9]  [0-9]' | cut -f1 -d:)
+cat $tmp_file | sed -e "1,${charge_mult_line}d" >> "$COM"
+rm $tmp_file
 
 # move file to location 
 if [[ ! "$LOCATION" -ef . ]]; then mv "$COM" "$LOCATION"; fi

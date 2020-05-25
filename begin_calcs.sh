@@ -6,7 +6,7 @@
 # source config and function files
 source_config
 
-echo -e "\nCommencing workflow [Version $FLOW_VERSION]"
+echo -e "\nCommencing accelerated workflow [Version $FLOW_VERSION]"
 
 cd $UNOPT_PDBS
 # determine charge info for each molecule
