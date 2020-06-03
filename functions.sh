@@ -30,10 +30,10 @@ function copy_opt_pdbs {
 		fi
 	done
 
-	if [[ "$curr_dir" == "$T1_SOLV" ]]; then
-        local opt_logs=$(for file in $S0_SOLV/completed/*solv.log; do echo $file; done)
+	if [ "$curr_dir" == "$S1_SOLV" ] || [ "$curr_dir" == "$CAT_RAD_SOLV" ]; then
+        local opt_logs=$(for file in $S0_SOLV/completed/*SOLV.log; do echo $file; done)
         local to_copy=$(for file in $opt_logs; do c=$(ls completed/$file* 2>/dev/null | wc -l); if [[ $c -eq 0 ]]; then echo $file; fi; done)
-        for file in $to_copy; do cp $S0_SOLV/completed/$file .; done
+        for file in $to_copy; do cp $file .; done
     fi
 
 	if [[ "$curr_dir" == "$SP_DFT" ]]; then
@@ -470,19 +470,19 @@ function get_missing_input_files {
 	local curr_dir=$PWD
 	copy_opt_pdbs
     if [[ "$curr_dir" == "$S0_SOLV" ]]; then
-		for file in *.pdb; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi_key); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt' -t=$inchi\_S0_solv -c=$charge -l=$S0_SOLV -f; rm $file; done
+		for file in *.pdb; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt' -t=$inchi\_S0_SOLV -c=$charge -l=$S0_SOLV -f; rm $file; done
     elif [[ "$curr_dir" == "$S1_SOLV" ]]; then
-		for file in *.log; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi_key); bash $ACCFLOW/scripts/make-com.sh -i=$file -r="#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt td=root=1" -t=$inchi\_S1_solv -c=$charge -l=$S1_SOLV -f; rm $file; done
+		for file in *.log; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi); bash $ACCFLOW/scripts/make-com.sh -i=$file -r="#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt td=root=1" -t=$inchi\_S1_SOLV -c=$charge -l=$S1_SOLV -f; rm $file; done
 	elif [[ "$curr_dir" == "$T1_SOLV" ]]; then
-		for file in *.log; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi_key); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt td=root=1' -s=3 -t=$inchi\_T1_solv -c=$charge -l=$T1_SOLV -f; rm $file; done
+		for file in *.log; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt td=root=1' -s=3 -t=$inchi\_T1_solv -c=$charge -l=$T1_SOLV -f; rm $file; done
     elif [[ "$curr_dir" == "$CAT_RAD_VAC" ]]; then
-		for file in *.pdb; do inchi="${file/.pdb/}"; charge=$(get_charge $inchi_key); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ opt' -t=$inchi\_cat-rad_vac -c=$(($charge + 1)) -s=2 -l=$CAT_RAD_VAC -f; rm $file; done
+		for file in *.pdb; do inchi="${file/.pdb/}"; charge=$(get_charge $inchi); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ opt' -t=$inchi\_cat-rad_vac -c=$(($charge + 1)) -s=2 -l=$CAT_RAD_VAC -f; rm $file; done
     elif [[ "$curr_dir" == "$CAT_RAD_SOLV" ]]; then
-		for file in *.pdb; do inchi="${file/.pdb/}"; charge=$(get_charge $inchi_key); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt' -t=$inchi\_cat-rad_solv -c=$(($charge + 1)) -s=2 -l=$CAT_RAD_SOLV -f; rm $file; done
+		for file in *.log; do inchi="$(echo $file | cut -d'_' -f1)"; charge=$(get_charge $inchi); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ SCRF=(Solvent=Acetonitrile) opt' -t=$inchi\_CAT-RAD_SOLV -c=$(($charge + 1)) -s=2 -l=$CAT_RAD_SOLV -f; rm $file; done
 	elif [[ "$curr_dir" == "$RM1_D" ]]; then
 		echo "UNSUPPORTED"
 	elif [[ "$curr_dir" == "$SP_DFT" ]]; then
-		for file in *.pdb; do inchi="${file/.pdb/}"; charge=$(get_charge $inchi_key); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ' -t=$inchi\_sp -l=$SP_DFT -c=$charge -f; rm $file; done
+		for file in *.pdb; do inchi="${file/.pdb/}"; charge=$(get_charge $inchi); bash $ACCFLOW/scripts/make-com.sh -i=$file -r='#p B3LYP/4-31G* EmpiricalDispersion=GD3BJ' -t=$inchi\_sp -l=$SP_DFT -c=$charge -f; rm $file; done
 	fi
 }
 
