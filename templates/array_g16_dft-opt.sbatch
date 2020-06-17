@@ -24,8 +24,10 @@ log=$title.log
 # check if job is already complete
 completed=$(job_finished $log)
 
+
 # run job if incomplete
 if [[ $completed -eq 0 ]]; then
+	echo "we are now in completd == 0"
 	# execute job
 	timeout TIME time g16 $input_file
 	timeout_status=$?
@@ -43,9 +45,11 @@ else
 	convergence_fail=0
 fi
 
-# end of job preparation for next submissions
-if [ $timeout_status -eq 124 ] || [ $convergence_fail -eq 1 ] || [ $link_9999_error -eq 1 ]; then		# if the run times out or encounters a convergence failure
 
+
+# end of job preparation for next submissions
+if [[ $timeout_status -eq 124 ]] || [[ $convergence_fail -eq 1 ]] || [[ $link_9999_error -eq 1 ]]; then		# if the run times out or encounters a convergence failure
+	
 	# move files to timeouts directory 
 	mv $title* resubmits/
 	cd resubmits/
@@ -53,8 +57,7 @@ if [ $timeout_status -eq 124 ] || [ $convergence_fail -eq 1 ] || [ $link_9999_er
 	# submit restart calc
 	restart_opt $title $ACCFLOW_TOOLS/templates/dft-opt_g16_sbatch_re.txt
 		
-elif [ $termination -eq 1 ]; then		# if the run terminated successfully
-
+elif [[ $termination -eq 1 ]]; then		# if the run terminated successfully
 	# move files to completed directory
 	mv $title* completed/
 	cd completed/

@@ -31,9 +31,9 @@ function copy_opt_pdbs {
 	done
 
 	if [ "$curr_dir" == "$S1_SOLV" ] || [ "$curr_dir" == "$CAT_RAD_SOLV" ]; then
-        local opt_logs=$(for file in $S0_SOLV/completed/*SOLV.log; do echo $file; done)
-        local to_copy=$(for file in $opt_logs; do c=$(ls completed/$file* 2>/dev/null | wc -l); if [[ $c -eq 0 ]]; then echo $file; fi; done)
-        for file in $to_copy; do cp $file .; done
+        local opt_logs=$(for file in $S0_SOLV/completed/*SOLV.log; do echo $(basename $file)| cut -d'_' -f1; done)
+        local to_copy=$(for file in $opt_logs; do c=$(ls completed/$file*.log 2>/dev/null | wc -l); if [[ $c -eq 0 ]]; then echo $file; fi; done)
+        for file in $to_copy; do cp $S0_SOLV/completed/"$file""_S0_SOLV.log" .; done
     fi
 
 	if [[ "$curr_dir" == "$SP_DFT" ]]; then
